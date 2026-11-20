@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4fb24a">
+<title>Долина Смешариков</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%234fb24a'/%3E%3C/svg%3E">
+<style>
+/* ========== База ========== */
+:root{
+  --bg:#dff3c8; --bg2:#c4e8a3; --sky:#9ad7ff; --card:#fffdf5; --ink:#2d2a26;
+  --accent:#4fb24a; --accent2:#ffb703; --honey:#f6a800; --shadow:0 10px 0 rgba(0,0,0,.12);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:#c4e8a3;overflow-x:hidden;color:var(--ink);text-align:center;
+  font-family:"Comic Sans MS","Comic Sans","Chalkboard SE","Comic Neue",cursive}
+.toggle{position:absolute;opacity:0;pointer-events:none}
+
+.page{
+  min-height:100vh;min-height:100dvh;
+  padding:max(20px,env(safe-area-inset-top)) 12px max(30px,env(safe-area-inset-bottom));
+  background:radial-gradient(circle at 50% 0,var(--sky),var(--bg) 45%,var(--bg2));
+  transition:background .6s,filter .6s;overflow:hidden;
+}
+h1{font-size:clamp(1.6rem,6vw,3rem);margin:.2em 0}
+h2{margin:36px 0 8px;font-size:clamp(1.4rem,4.5vw,1.9rem)}
+.sub{margin:0 0 8px;opacity:.75}
+
+/* ========== Всё строго круглое ========== */
+.hero,.map,.spot,.jar,.btn,.player,.pay,.resident-wrap,.err-circle{border-radius:50%}
+
+/* шапка */
+.hero{width:min(540px,94vw);height:min(540px,94vw);margin:0 auto;padding:11%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  background:var(--card);border:8px solid var(--accent);box-shadow:var(--shadow)}
+.residents{display:flex;justify-content:center;gap:4px}
+.resident{width:min(64px,13vw);height:min(64px,13vw);animation:bob 2.4s ease-in-out infinite}
+.resident:nth-child(2){animation-delay:.3s}.resident:nth-child(3){animation-delay:.6s}
+.resident:nth-child(4){animation-delay:.9s}.resident:nth-child(5){animation-delay:1.2s}
+@keyframes bob{50%{transform:translateY(-8px)}}
+
+/* музыка */
+.player{width:min(260px,68vw);aspect-ratio:3/1;margin-top:8px;padding:0 9%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--accent);color:#fff;font-size:.8rem;font-weight:bold}
+.player audio{width:100%;height:32px;margin-top:4px;border-radius:50%}
+
+/* ========== Карта с мёдом и фантиками ========== */
+.map{position:relative;width:min(620px,94vw);aspect-ratio:1;margin:8px auto;overflow:hidden;
+  border:8px solid var(--accent);box-shadow:var(--shadow);
+  background:radial-gradient(circle at 35% 30%,#bfeb8f,#7ccc55 55%,#5aae3d)}
+.map svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.spot{position:absolute;aspect-ratio:1;background:var(--card);border:4px solid var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  font-size:clamp(.6rem,2vw,.9rem);line-height:1.1;padding:4px;box-shadow:0 6px 0 rgba(0,0,0,.15)}
+.spot b{font-size:1.05em}
+.spot.big{width:34%}
+.spot.small{width:19%}
+.spot.kop{left:8%;top:12%}
+.spot.yo{right:7%;top:30%}
+.spot.los{left:16%;bottom:9%}
+.spot.nyu{right:28%;bottom:6%}
+.spot.bar{left:43%;top:6%}
+.spot.cen{left:40%;top:44%;background:var(--accent2)}
+.jar{width:52%;aspect-ratio:1;border:4px solid var(--ink);position:relative;overflow:hidden;background:var(--card)}
+.jar::before{content:"";position:absolute;left:0;right:0;bottom:0;height:72%;
+  background:linear-gradient(var(--accent2),var(--honey))}
+.jar span{position:relative;display:flex;height:100%;align-items:center;justify-content:center;
+  font-weight:bold;font-size:1.25em;color:#222}
+@property --n{syntax:"<integer>";initial-value:0;inherits:false}
+.counter{font-weight:bold;font-size:2em;color:var(--accent);--n:4096;
+  animation:count 2.5s ease-out both;counter-reset:n var(--n)}
+.counter::after{content:counter(n)}
+@keyframes count{from{--n:0}}
+
+/* ========== Кнопки-пасхалки ========== */
+.controls{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;padding:6px 12px 24px;background:var(--bg2);transition:filter .6s}
+.btn{display:inline-flex;align-items:center;justify-content:center;width:112px;height:112px;padding:10px;
+  cursor:pointer;user-select:none;text-decoration:none;color:#fff;font:inherit;font-weight:bold;font-size:1rem;
+  background:var(--accent);border:0;box-shadow:0 7px 0 rgba(0,0,0,.2);transition:transform .15s}
+.btn small{display:block;font-size:.68rem;font-weight:normal;opacity:.9}
+.btn.nyu{background:#ff4f9a}.btn.bar{background:#78909c}.btn.los{background:#8d6e63}.btn.e404{background:#e2463a}
+@media (hover:hover){.btn:hover{transform:scale(1.08)}}
+.btn:active{transform:translateY(5px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.on{display:none}
+#pink:checked ~ .controls .nyu .off,#sad:checked ~ .controls .bar .off,#broke:checked ~ .controls .los .off{display:none}
+#pink:checked ~ .controls .nyu .on,#sad:checked ~ .controls .bar .on,#broke:checked ~ .controls .los .on{display:block}
+
+/* Нюша: всё розовое */
+#pink:checked ~ .page,#pink:checked ~ .controls,#pink:checked ~ footer{
+  --bg:#ffd6ea;--bg2:#ffb3d6;--sky:#ffe6f2;--card:#fff5fa;--accent:#ff4f9a;--accent2:#ff8cc6;--honey:#ff5fa8}
+#pink:checked ~ .page .map{background:radial-gradient(circle at 35% 30%,#ffd1e6,#ff9cc8 55%,#ff74b0)}
+#pink:checked ~ .page .map svg.bg *{fill:#ff5fa8;stroke:#ffc2dc}
+
+/* Бараш: грустная тема */
+#sad:checked ~ .page,#sad:checked ~ footer{filter:grayscale(1) brightness(.85);--sky:#9aa5ad;--bg:#b9c2c8;--bg2:#8e9aa2}
+#sad:checked ~ .controls{--bg2:#8e9aa2}
+#sad:checked ~ .page .resident{animation:droop 3s ease-in-out infinite}
+@keyframes droop{50%{transform:translateY(6px) rotate(-6deg)}}
+.rain,.sad-note{display:none}
+#sad:checked ~ .rain{display:block;position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.45;
+  background:repeating-linear-gradient(105deg,transparent 0 22px,#9fc3dd 22px 24px);
+  background-size:200px 200px;animation:rain .5s linear infinite}
+@keyframes rain{to{background-position:-40px 200px}}
+#sad:checked ~ .page .sad-note{display:block;font-size:1.1rem;margin-top:6px}
+
+/* Лосяш: ломает вёрстку */
+#broke:checked ~ .page .hero{transform:rotate(-14deg) translateX(18%);border-radius:0}
+#broke:checked ~ .page h1{transform:rotate(180deg);letter-spacing:.5em}
+#broke:checked ~ .page h2{text-align:left;transform:skew(-25deg) translateX(30%);font-size:3rem}
+#broke:checked ~ .page .map{transform:scaleX(1.35) rotate(9deg);margin-left:-20%}
+#broke:checked ~ .page .spot:nth-child(2){left:70%;top:70%}
+#broke:checked ~ .page .spot:nth-child(3){left:-8%;top:45%;transform:rotate(40deg)}
+#broke:checked ~ .page .spot:nth-child(4){top:-6%;right:-6%}
+#broke:checked ~ .page .sub{font-size:.5rem;text-align:right}
+#broke:checked ~ .page .resident:nth-child(odd){transform:translateY(60px) rotate(90deg);animation:none}
+#broke:checked ~ .controls .btn:not(.los){transform:rotate(25deg) translateY(14px)}
+#broke:checked ~ footer{transform:rotate(3deg)}
+
+/* ========== 404 ========== */
+.err{display:none;position:fixed;inset:0;z-index:20;padding:16px;
+  align-items:center;justify-content:center;background:radial-gradient(circle,#cfd8dc,#90a4ae)}
+.err:target{display:flex}
+.err-circle{width:min(430px,92vw);height:min(430px,92vw);flex-shrink:0;padding:12%;background:#fffdf5;border:7px solid #78909c;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;box-shadow:var(--shadow)}
+.err-circle>*{flex-shrink:0}
+.err-circle .code{font-size:clamp(2.6rem,10vw,4rem);font-weight:bold;line-height:1;color:#607d8b}
+.err-circle .quote{font-size:clamp(1rem,4vw,1.35rem)}
+.tear{animation:drip 1.6s ease-in infinite}
+@keyframes drip{to{transform:translateY(14px);opacity:0}}
+.err .btn{width:84px;height:84px;font-size:.85rem;background:#78909c}
+
+/* ========== Футер: имя 4-м шрифтом ========== */
+footer{padding:20px 12px max(16px,env(safe-area-inset-bottom));background:var(--bg2);transition:transform .4s}
+.pay{display:inline-block;padding:14px 30px;background:var(--card);border:2px dotted var(--accent);font-size:.8rem}
+.pay .name{display:block;margin-top:4px;font-size:4pt;font-family:"Comic Sans MS",cursive}
+
+/* ========== Телефоны ========== */
+@media (max-width:560px){
+  .hero{padding:9%}
+  .sad-note{margin:0}
+  .hero,.map{border-width:6px}
+  .spot{border-width:3px;padding:2px}
+  .spot.big{width:38%}
+  .spot.small{width:22%}
+  .spot .lbl{display:none}
+  .spot.bar{left:50%;top:5%}
+  .spot.cen{left:30%;top:52%}
+  .spot.los{left:10%;bottom:8%}
+  .counter{font-size:1.55em}
+  .btn{width:96px;height:96px;font-size:.9rem}
+  .controls{gap:10px}
+  #broke:checked ~ .page h2{font-size:2rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- общее лицо для наших собственных круглых жителей -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="face" viewBox="0 0 100 100">
+    <ellipse cx="38" cy="46" rx="7" ry="9" fill="#fff"/><ellipse cx="62" cy="46" rx="7" ry="9" fill="#fff"/>
+    <circle cx="39" cy="48" r="4" fill="#222"/><circle cx="63" cy="48" r="4" fill="#222"/>
+    <circle cx="40" cy="46" r="1.4" fill="#fff"/><circle cx="64" cy="46" r="1.4" fill="#fff"/>
+    <circle cx="28" cy="62" r="5" fill="#ff7a7a" opacity=".45"/><circle cx="72" cy="62" r="5" fill="#ff7a7a" opacity=".45"/>
+    <path d="M40 64 Q50 73 60 64" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+</defs></svg>
+
+<input type="checkbox" id="pink" class="toggle">
+<input type="checkbox" id="sad" class="toggle">
+<input type="checkbox" id="broke" class="toggle">
+<div class="rain" aria-hidden="true"></div>
+
+<div class="page" id="top">
+  <header class="hero">
+    <div class="residents" aria-hidden="true">
+      <svg class="resident" viewBox="0 0 100 100"><circle cx="50" cy="55" r="38" fill="#7ec8e3"/><path d="M50 17V8" stroke="#3a8a2f" stroke-width="4"/><ellipse cx="57" cy="9" rx="8" ry="4" fill="#57b847"/><use href="#face"/></svg>
+      <svg class="resident" viewBox="0 0 100 100"><circle cx="50" cy="55" r="38" fill="#f4a259"/><rect x="34" y="3" width="32" height="18" rx="3" fill="#333"/><rect x="26" y="19" width="48" height="5" rx="2" fill="#333"/><use href="#face"/></svg>
+      <svg class="resident" viewBox="0 0 100 100"><circle cx="50" cy="55" r="38" fill="#b39ddb"/><path d="M50 17V6" stroke="#555" stroke-width="3"/><path d="M50 0l2.4 5 5.4.6-4 3.7 1.1 5.3L50 12l-4.9 2.6 1.1-5.3-4-3.7 5.4-.6z" fill="#ffd23f"/><use href="#face"/></svg>
+      <svg class="resident" viewBox="0 0 100 100"><circle cx="50" cy="55" r="38" fill="#9ccc65"/><ellipse cx="44" cy="19" rx="24" ry="8" fill="#d32f2f"/><circle cx="44" cy="10" r="3" fill="#d32f2f"/><use href="#face"/></svg>
+      <svg class="resident" viewBox="0 0 100 100"><circle cx="50" cy="55" r="38" fill="#ffd54f"/><path d="M14 52Q14 12 50 12Q86 12 86 52" stroke="#444" stroke-width="5" fill="none"/><rect x="7" y="44" width="12" height="20" rx="6" fill="#444"/><rect x="81" y="44" width="12" height="20" rx="6" fill="#444"/><use href="#face"/></svg>
+    </div>
+    <h1>Долина Смешариков</h1>
+    <p class="sub">Заказчик: Крош и&nbsp;Ко</p>
+    <div class="player">
+      🎵 Музыку добавим позже
+      
+    </div>
+    <p class="sad-note">☔ Грустно…</p>
+  </header>
+
+  <h2>Карта долины</h2>
+  <p class="sub">Мёд и фантики — прямо на карте</p>
+  <div class="map" role="img" aria-label="Карта долины: у Копатыча 72% мёда, у Ёжика 4096 фантиков">
+    <svg class="bg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M-5 72C20 62 30 86 55 74S85 52 105 62" stroke="#7fd0ff" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <circle cx="80" cy="84" r="2.5" fill="#2e7d32"/><circle cx="84" cy="80" r="3" fill="#388e3c"/>
+      <circle cx="8" cy="50" r="3" fill="#388e3c"/><circle cx="12" cy="54" r="2.5" fill="#2e7d32"/>
+      <circle cx="30" cy="92" r="2" fill="#fff59d"/><circle cx="72" cy="20" r="1.8" fill="#fff59d"/>
+    </svg>
+    <div class="spot big kop"><span>🍯 <b>Копатыч</b></span><div class="jar"><span>72%</span></div><span class="lbl">мёда в бочонке</span></div>
+    <div class="spot big yo"><span>🍬 <b>Ёжик</b></span><div class="counter" aria-hidden="true"></div><span class="lbl">фантиков</span></div>
+    <div class="spot small bar"><span>🪶</span><b>Бараш</b></div>
+    <div class="spot small cen"><span>📍</span><b>Центр</b></div>
+    <div class="spot small los"><span>🔭</span><b>Лосяш</b></div>
+    <div class="spot small nyu"><span>🎀</span><b>Нюша</b></div>
+  </div>
+
+  <h2>Кнопки-пасхалки</h2>
+  <p class="sub">Жми — не бойся</p>
+</div>
+
+<div class="controls">
+  <label class="btn nyu" for="pink"><span class="off">Нюша<small>всё в розовый</small></span><span class="on">Нюша<small>вернуть цвет</small></span></label>
+  <label class="btn bar" for="sad"><span class="off">Бараш<small>грустная тема</small></span><span class="on">Бараш<small>хватит грустить</small></span></label>
+  <label class="btn los" for="broke"><span class="off">Лосяш<small>сломать вёрстку</small></span><span class="on">Лосяш<small>починить</small></span></label>
+  <a class="btn e404" href="#e404">404<small>&nbsp;потеряться</small></a>
+</div>
+
+<footer>
+  <div class="pay">Оплата: опыт в портфолио и респект от жителей долины 🍜
+    <span class="name">Сделал: Шубный Кирилл</span>
+  </div>
+</footer>
+
+<!-- Страница 404 — внутри этого же файла -->
+<div class="err" id="e404" role="dialog" aria-label="Ошибка 404">
+  <div class="err-circle">
+    <svg width="120" height="120" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="58" r="36" fill="#b0bec5"/>
+      <path d="M31 48L44 43M69 48L56 43" stroke="#222" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="38" cy="54" rx="5" ry="4" fill="#222"/><ellipse cx="62" cy="54" rx="5" ry="4" fill="#222"/>
+      <path d="M40 76Q50 67 60 76" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse class="tear" cx="37" cy="64" rx="2.5" ry="4" fill="#4fc3f7"/>
+    </svg>
+    <div class="code">404</div>
+    <div class="quote">«Смысла нет. Страницы тоже»</div>
+    <a class="btn" href="#top">Назад</a>
+  </div>
+</div>
+
+</body>
+</html>
